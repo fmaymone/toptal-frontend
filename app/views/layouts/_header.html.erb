@@ -1,0 +1,58 @@
+<header id="header" role="banner">
+  <div id="messages" role="navigation">
+   <% flash.each do |name, message| %>
+     <div id = <%= name %> class='alert alert-<%= name %> alert-dismissible' role='alert'>
+     <%= message %>
+     <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' background-color: "transparent">X</span></button>
+       <script>
+        $( "button" ).click(function() {
+          $( "#<%= name %>" ).hide();
+        });
+        </script>
+     </div> 
+   <% end %>
+  </div> 
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+      <%= link_to image_tag('logo.png', id: 'logo', class: "d-inline-block align-top", height: '32', width: '32'), root_path, :'data-no-turbolink' => true %>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+      </ul>
+      <p class="navbar-text pull-right">
+        <% if user_signed_in? %>
+          Logged in as <strong><%= current_user.email %></strong>.
+          <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
+          <%= link_to "Log Out", destroy_user_session_path, method: :delete, title: "Log Out" %>
+        <% else %>
+          <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+          <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+        <% end %>
+      </p>
+    </div>
+  </nav>
+</header>

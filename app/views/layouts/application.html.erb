@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Workspace</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-
-<%= yield %>
-
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Plan your own trips with the coolest app ever"content="Carvalhos Company">
+    <title><%= content_for?(:title) ? "#{yield :title} | " : '' %>Nice Trip</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= yield :css %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= yield :head_javascript %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <%= render partial: 'layouts/header' %>
+    <%= yield %>
+    <%= render partial: 'layouts/footer' %>
+    <%= yield :foot_javascript %>
+  </body>
 </html>
