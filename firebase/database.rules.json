@@ -90,10 +90,10 @@
       ".read": true,
       ".write": "auth != null"
     },
-    "companies": {
-      ".read": "(auth != null && root.child('admins/'+auth.uid).exists()) || root.child('user_grants/'+auth.uid+'/read_companies').exists()",
+    "trips": {
+      ".read": "(auth != null && root.child('admins/'+auth.uid).exists()) || root.child('user_grants/'+auth.uid+'/read_trips').exists()",
       "$uid": {
-        ".write": "(auth != null && root.child('admins/'+auth.uid).exists()) || (data.exists() && newData.exists() && root.child('user_grants/'+auth.uid+'/edit_company').exists()) || (!data.exists() && newData.exists() && root.child('user_grants/'+auth.uid+'/create_company').exists()) || (data.exists() && !newData.exists() && root.child('user_grants/'+auth.uid+'/delete_company').exists())"
+        ".write": "(auth != null && root.child('admins/'+auth.uid).exists()) || (data.exists() && newData.exists() && root.child('user_grants/'+auth.uid+'/edit_trip').exists()) || (!data.exists() && newData.exists() && root.child('user_grants/'+auth.uid+'/create_trip').exists()) || (data.exists() && !newData.exists() && root.child('user_grants/'+auth.uid+'/delete_trip').exists())"
       }
     },
     "public_chats": {

@@ -114,9 +114,9 @@ const getMenuItems = props => {
       ]
     },
     {
-      value: '/companies',
-      visible: isGranted('read_companies'),
-      primaryText: intl.formatMessage({ id: 'companies' }),
+      value: '/trips',
+      visible: isGranted('read_trips'),
+      primaryText: intl.formatMessage({ id: 'trips' }),
       leftIcon: <Business />
     },
     {

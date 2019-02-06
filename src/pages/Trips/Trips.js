@@ -15,31 +15,31 @@ import { withFirebase } from 'firekit-provider'
 import isGranted from 'rmw-shell/lib/utils/auth'
 import { Activity, Scrollbar } from 'rmw-shell'
 
-class Companies extends Component {
+class Trips extends Component {
   componentDidMount () {
     const { watchList, firebaseApp } = this.props
 
-    let ref = firebaseApp.database().ref('companies').limitToFirst(20)
+    let ref = firebaseApp.database().ref('trips').limitToFirst(20)
 
     watchList(ref)
   }
 
-  renderList (companies) {
+  renderList (trips) {
     const { history } = this.props
 
-    if (companies === undefined) {
+    if (trips === undefined) {
       return <div />
     }
 
-    return companies.map((company, index) => {
+    return trips.map((trip, index) => {
       return <div key={index}>
         <ListItem
           key={index}
-          onClick={() => { history.push(`/companies/edit/${company.key}`) }}
+          onClick={() => { history.push(`/trips/edit/${trip.key}`) }}
           id={index}>
-          {company.val.photoURL && <Avatar src={company.val.photoURL} alt='bussines' />}
-          {!company.val.photoURL && <Avatar> <Icon > business </Icon>  </Avatar>}
-          <ListItemText primary={company.val.name} secondary={company.val.full_name} />
+          {trip.val.photoURL && <Avatar src={trip.val.photoURL} alt='bussines' />}
+          {!trip.val.photoURL && <Avatar> <Icon > business </Icon>  </Avatar>}
+          <ListItemText primary={trip.val.name} secondary={trip.val.full_name} />
         </ListItem>
         <Divider inset />
       </div>
@@ -47,25 +47,25 @@ class Companies extends Component {
   }
 
   render () {
-    const { intl, companies, theme, history, isGranted } = this.props
+    const { intl, trips, theme, history, isGranted } = this.props
 
     return (
       <Activity
-        isLoading={companies === undefined}
+        isLoading={trips === undefined}
         containerStyle={{ overflow: 'hidden' }}
-        title={intl.formatMessage({ id: 'companies' })}>
+        title={intl.formatMessage({ id: 'trips' })}>
         <Scrollbar>
 
           <div style={{ overflow: 'none', backgroundColor: theme.palette.convasColor }}>
             <List id='test' style={{ height: '100%' }} ref={(field) => { this.list = field }}>
-              {this.renderList(companies)}
+              {this.renderList(trips)}
             </List>
           </div>
 
           <div style={{ position: 'fixed', right: 18, zIndex: 3, bottom: 18 }}>
             {
-              isGranted('create_company') &&
-              <Button variant='fab' color='secondary' onClick={() => { history.push(`/companies/create`) }} >
+              isGranted('create_trip') &&
+              <Button variant='fab' color='secondary' onClick={() => { history.push(`/trips/create`) }} >
                 <Icon className='material-icons' >add</Icon>
               </Button>
             }
@@ -78,8 +78,8 @@ class Companies extends Component {
   }
 }
 
-Companies.propTypes = {
-  companies: PropTypes.array,
+Trips.propTypes = {
+  trips: PropTypes.array,
   history: PropTypes.object,
   isGranted: PropTypes.func.isRequired
 }
@@ -88,7 +88,7 @@ const mapStateToProps = (state) => {
   const { auth, lists } = state
 
   return {
-    companies: lists.companies,
+    trips: lists.trips,
     auth,
     isGranted: grant => isGranted(state, grant)
   }
@@ -96,4 +96,4 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps
-)(injectIntl(withTheme()(withRouter(withFirebase(Companies)))))
+)(injectIntl(withTheme()(withRouter(withFirebase(Trips)))))

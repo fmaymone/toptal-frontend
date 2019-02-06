@@ -56,7 +56,7 @@ Let's take a look at some of them:
 
 # Are there more in depth informations about this project?
 
-Sure. It is a project made over years and still fully supported. Reason for that is that we use it in our company for production projects so it has to work for at least some years. Good enough for the JavaScript ecosystem :wink:
+Sure. It is a project made over years and still fully supported. Reason for that is that we use it in our trip for production projects so it has to work for at least some years. Good enough for the JavaScript ecosystem :wink:
 
 The informations you are seeking are skatered over some Medium articles writen by me at the time I was working on solving some problems in this project. So they should explain some core parts in detail:
 

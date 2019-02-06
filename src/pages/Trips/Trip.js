@@ -6,7 +6,7 @@ import { Activity } from 'rmw-shell'
 //import { ResponsiveMenu } from 'material-ui-responsive-menu';
 import { withTheme, withStyles } from '@material-ui/core/styles'
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
-import CompanyForm from '../../components/Forms/Company';
+import CompanyForm from '../../components/Forms/Trip';
 import { withRouter } from 'react-router-dom';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
@@ -22,15 +22,15 @@ import { change, submit } from 'redux-form';
 import isGranted from 'rmw-shell/lib/utils/auth';
 import IconButton from '@material-ui/core/IconButton';
 
-const path = '/companies/';
-const form_name = 'company';
+const path = '/trips/';
+const form_name = 'trip';
 
 const styles = theme => ({
 
 })
 
 
-class Company extends Component {
+class Trip extends Component {
 
   validate = (values) => {
     const { intl } = this.props;
@@ -46,7 +46,7 @@ class Company extends Component {
   handleClose = () => {
     const { setDialogIsOpen } = this.props;
 
-    setDialogIsOpen('delete_company', false);
+    setDialogIsOpen('delete_trip', false);
 
   }
 
@@ -91,7 +91,7 @@ class Company extends Component {
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
-                onClick={() => { submit('company') }}
+                onClick={() => { submit('trip') }}
               >
                 <Icon className="material-icons" >save</Icon>
               </IconButton>
@@ -101,7 +101,7 @@ class Company extends Component {
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
-                onClick={() => { setDialogIsOpen('delete_company', true) }}
+                onClick={() => { setDialogIsOpen('delete_trip', true) }}
               >
                 <Icon className="material-icons" >delete</Icon>
               </IconButton>
@@ -110,24 +110,24 @@ class Company extends Component {
         }
 
         onBackClick={() => { history.goBack() }}
-        title={intl.formatMessage({ id: match.params.uid ? 'edit_company' : 'create_company' })}>
+        title={intl.formatMessage({ id: match.params.uid ? 'edit_trip' : 'create_trip' })}>
 
         <div style={{ margin: 15, display: 'flex' }}>
 
           <FireForm
             firebaseApp={firebaseApp}
-            name={'company'}
+            name={'trip'}
             path={`${path}`}
             validate={this.validate}
-            onSubmitSuccess={(values) => { history.push('/companies'); }}
-            onDelete={(values) => { history.push('/companies'); }}
+            onSubmitSuccess={(values) => { history.push('/trips'); }}
+            onDelete={(values) => { history.push('/trips'); }}
             uid={uid}>
             <CompanyForm />
           </FireForm>
         </div>
 
         <Dialog
-          open={dialogs.delete_company === true}
+          open={dialogs.delete_trip === true}
           onClose={this.handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
@@ -156,7 +156,7 @@ class Company extends Component {
   }
 }
 
-Company.propTypes = {
+Trip.propTypes = {
   history: PropTypes.object,
   intl: intlShape.isRequired,
   setDialogIsOpen: PropTypes.func.isRequired,
@@ -185,4 +185,4 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(
   mapStateToProps, { setDialogIsOpen, change, submit }
-)(injectIntl(withRouter(withFirebase(withTheme()(withStyles(styles, { withTheme: true })(Company))))))
+)(injectIntl(withRouter(withFirebase(withTheme()(withStyles(styles, { withTheme: true })(Trip))))))

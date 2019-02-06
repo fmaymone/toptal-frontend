@@ -42,7 +42,7 @@ class Form extends Component {
             change={this.props.change}
             initialized={initialized}
             intl={intl}
-            path={'companies'}
+            path={'trips'}
           />
 
           <div>
@@ -96,7 +96,7 @@ class Form extends Component {
           </div>
 
           <ImageCropDialog
-            path={`companies/${uid}`}
+            path={`trips/${uid}`}
             fileName={`photoURL`}
             onUploadSuccess={(s) => { this.handlePhotoUploadSuccess(s) }}
             open={dialogs.new_company_photo !== undefined}
@@ -120,8 +120,8 @@ Form.propTypes = {
   match: PropTypes.object.isRequired
 }
 
-Form = reduxForm({ form: 'company' })(Form)
-const selector = formValueSelector('company')
+Form = reduxForm({ form: 'trip' })(Form)
+const selector = formValueSelector('trip')
 
 const mapStateToProps = state => {
   const { intl, vehicleTypes, users, dialogs } = state
