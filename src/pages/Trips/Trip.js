@@ -74,6 +74,7 @@ class Trip extends Component {
       match,
       submit,
       isGranted,
+      isAuthorised,
       firebaseApp,
       uid,
       isLoading
@@ -87,7 +88,7 @@ class Trip extends Component {
         iconStyleRight={{ width: '50%' }}
         appBarContent={
           <div style={{ display: 'flex' }}>
-            {((!uid && isGranted(`create_${form_name}`)) || (!!uid && isGranted(`edit_${form_name}`))) &&
+            {((!uid && isAuthorised) || (!!uid && isAuthorised)) &&
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -97,7 +98,7 @@ class Trip extends Component {
               </IconButton>
             }
 
-            {(isGranted(`delete_${form_name}`)) &&
+            {(isAuthorised) &&
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -169,7 +170,7 @@ Trip.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
-  const { intl, dialogs } = state;
+  const { auth, intl, dialogs } = state;
   const { match } = ownProps
 
   const uid = match.params.uid
@@ -179,7 +180,9 @@ const mapStateToProps = (state, ownProps) => {
     dialogs,
     uid,
     isGranted: grant => isGranted(state, grant),
-    isLoading: isLoading(state, `${path}/${uid}`)
+    isLoading: isLoading(state, `${path}/${uid}`),
+    isAuthorised: auth.isAuthorised
+
   };
 };
 

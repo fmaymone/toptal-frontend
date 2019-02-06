@@ -47,7 +47,7 @@ class Trips extends Component {
   }
 
   render () {
-    const { intl, trips, theme, history, isGranted } = this.props
+    const { intl, trips, theme, history, isGranted, isAuthorised} = this.props
 
     return (
       <Activity
@@ -64,7 +64,7 @@ class Trips extends Component {
 
           <div style={{ position: 'fixed', right: 18, zIndex: 3, bottom: 18 }}>
             {
-              isGranted('create_trip') &&
+              isAuthorised &&
               <Button variant='fab' color='secondary' onClick={() => { history.push(`/trips/create`) }} >
                 <Icon className='material-icons' >add</Icon>
               </Button>
@@ -90,7 +90,8 @@ const mapStateToProps = (state) => {
   return {
     trips: lists.trips,
     auth,
-    isGranted: grant => isGranted(state, grant)
+    isGranted: grant => isGranted(state, grant),
+    isAuthorised: auth.isAuthorised
   }
 }
 

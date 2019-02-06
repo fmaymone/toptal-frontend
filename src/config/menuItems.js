@@ -88,76 +88,20 @@ const getMenuItems = props => {
       leftIcon: <DaschboardIcon />
     },
     {
-      visible: isAuthorised,
-      primaryText: intl.formatMessage({ id: 'chats' }),
-      primaryTogglesNestedList: true,
-      leftIcon: <ChatIcon />,
-      nestedItems: [
-        {
-          value: '/chats',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({ id: 'private' }),
-          leftIcon: <PersonIcon />
-        },
-        {
-          value: '/public_chats',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({ id: 'public' }),
-          leftIcon: <GroupIcon />
-        },
-        {
-          value: '/predefined_chat_messages',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({ id: 'predefined_messages' }),
-          leftIcon: <TextsmsRounded />
-        }
-      ]
-    },
-    {
       value: '/trips',
-      visible: isGranted('read_trips'),
+      visible: isAuthorised,
       primaryText: intl.formatMessage({ id: 'trips' }),
       leftIcon: <Business />
     },
     {
-      value: '/tasks',
-      visible: isAuthorised,
-      primaryText: intl.formatMessage({ id: 'tasks' }),
-      leftIcon: <ListIcon />
-    },
-    {
-      visible: isAuthorised,
-      primaryTogglesNestedList: true,
-      primaryText: intl.formatMessage({ id: 'firestore' }),
-      leftIcon: <FlashOn />,
-      nestedItems: [
-        {
-          value: '/document',
-          primaryText: intl.formatMessage({ id: 'document' }),
-          leftIcon: <FlashOn />
-        },
-        {
-          value: '/collection',
-          primaryText: intl.formatMessage({ id: 'collection' }),
-          leftIcon: <FlashOn />
-        }
-      ]
-    },
-    {
-      value: '/about',
-      visible: isAuthorised,
-      primaryText: intl.formatMessage({ id: 'about' }),
-      leftIcon: <InfoOutlined />
-    },
-    {
-      visible: isAuthorised, // In prod: isGranted('administration'),
+      visible: isGranted('administration'), 
       primaryTogglesNestedList: true,
       primaryText: intl.formatMessage({ id: 'administration' }),
       leftIcon: <Security />,
       nestedItems: [
         {
           value: '/users',
-          visible: isAuthorised, // In prod: isGranted('read_users'),
+          visible: isGranted('administration'), 
           primaryText: intl.formatMessage({ id: 'users' }),
           leftIcon: <GroupIcon />
         },
