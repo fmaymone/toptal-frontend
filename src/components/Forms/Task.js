@@ -41,13 +41,13 @@ class Form extends Component {
 
           <div>
             <Field
-              name='description'
+              name='comment'
               disabled={!initialized}
               component={TextField}
               multiline
-              placeholder={intl.formatMessage({ id: 'description_hint' })}
-              label={intl.formatMessage({ id: 'description_label' })}
-              ref='description'
+              placeholder={intl.formatMessage({ id: 'comment_hint' })}
+              label={intl.formatMessage({ id: 'comment_label' })}
+              ref='comment'
               withRef
             />
           </div>

@@ -20,7 +20,7 @@ const config = {
     authDomain: 'toptal-trips.firebaseapp.com',
     databaseURL: 'https://toptal-trips.firebaseio.com',
     projectId: 'toptal-trips',
-    storageBucket: '',
+    storageBucket: 'toptal-trips.appspot.com',
     messagingSenderId: '851204810915'
   },
   firebase_config_dev: {
@@ -28,7 +28,7 @@ const config = {
     authDomain: 'toptal-trips.firebaseapp.com',
     databaseURL: 'https://toptal-trips.firebaseio.com',
     projectId: 'toptal-trips',
-    storageBucket: '',
+    storageBucket: 'toptal-trips.appspot.com',
     messagingSenderId: '851204810915'
   },
   firebase_providers: ['google.com', 'password'],

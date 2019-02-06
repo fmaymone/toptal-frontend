@@ -39,7 +39,7 @@ class Trips extends Component {
           id={index}>
           {trip.val.photoURL && <Avatar src={trip.val.photoURL} alt='bussines' />}
           {!trip.val.photoURL && <Avatar> <Icon > business </Icon>  </Avatar>}
-          <ListItemText primary={trip.val.name} secondary={trip.val.full_name} />
+          <ListItemText primary={trip.val.name} secondary={trip.val.destination} />
         </ListItem>
         <Divider inset />
       </div>

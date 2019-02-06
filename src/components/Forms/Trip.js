@@ -59,38 +59,50 @@ class Form extends Component {
 
           <div>
             <Field
-              name='full_name'
+              name='destination'
               disabled={!initialized}
               component={TextField}
-              placeholder={intl.formatMessage({ id: 'full_name_hint' })}
-              label={intl.formatMessage({ id: 'full_name_label' })}
-              ref='full_name'
+              placeholder={intl.formatMessage({ id: 'destination_hint' })}
+              label={intl.formatMessage({ id: 'destination_label' })}
+              ref='destination'
               withRef
             />
           </div>
 
           <div>
             <Field
-              name='vat'
+              name='start_date'
               disabled={!initialized}
               component={TextField}
-              placeholder={intl.formatMessage({ id: 'vat_hint' })}
-              label={intl.formatMessage({ id: 'vat_label' })}
-              ref='vat'
+              placeholder={intl.formatMessage({ id: 'start_date_hint' })}
+              label={intl.formatMessage({ id: 'start_date_label' })}
+              ref='start_date'
+              withRef
+            />
+          </div>
+         
+          <div>
+            <Field
+              name='end_date'
+              disabled={!initialized}
+              component={TextField}
+              placeholder={intl.formatMessage({ id: 'end_date_hint' })}
+              label={intl.formatMessage({ id: 'end_date_label' })}
+              ref='end_date'
               withRef
             />
           </div>
 
           <div>
             <Field
-              name='description'
+              name='comment'
               disabled={!initialized}
               component={TextField}
               multiline
               rows={2}
-              placeholder={intl.formatMessage({ id: 'description_hint' })}
-              label={intl.formatMessage({ id: 'description_label' })}
-              ref='description'
+              placeholder={intl.formatMessage({ id: 'comment_hint' })}
+              label={intl.formatMessage({ id: 'comment_label' })}
+              ref='comment'
               withRef
             />
           </div>

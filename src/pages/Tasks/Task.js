@@ -103,11 +103,11 @@ class Task extends Component {
           open={dialogs.delete_task_from_list !== undefined}
           onClose={this.handleClose}
           aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
+          aria-describedby="alert-dialog-comment"
         >
           <DialogTitle id="alert-dialog-title">{intl.formatMessage({ id: 'delete_task_title' })}</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+            <DialogContentText id="alert-dialog-comment">
               {intl.formatMessage({ id: 'delete_task_message' })}
             </DialogContentText>
           </DialogContent>

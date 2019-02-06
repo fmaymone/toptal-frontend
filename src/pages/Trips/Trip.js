@@ -37,8 +37,8 @@ class Trip extends Component {
     const errors = {}
 
     errors.name = !values.name ? intl.formatMessage({ id: 'error_required_field' }) : '';
-    errors.full_name = !values.full_name ? intl.formatMessage({ id: 'error_required_field' }) : '';
-    errors.vat = !values.vat ? intl.formatMessage({ id: 'error_required_field' }) : '';
+    errors.destination = !values.destination ? intl.formatMessage({ id: 'error_required_field' }) : '';
+    errors.start_date = !values.start_date ? intl.formatMessage({ id: 'error_required_field' }) : '';
 
     return errors
   }
@@ -130,11 +130,11 @@ class Trip extends Component {
           open={dialogs.delete_trip === true}
           onClose={this.handleClose}
           aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
+          aria-describedby="alert-dialog-comment"
         >
           <DialogTitle id="alert-dialog-title">{intl.formatMessage({ id: 'delete_company_title' })}</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+            <DialogContentText id="alert-dialog-comment">
               {intl.formatMessage({ id: 'delete_company_message' })}
             </DialogContentText>
           </DialogContent>

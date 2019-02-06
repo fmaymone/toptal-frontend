@@ -1,6 +1,6 @@
 {
   "name": "functions",
-  "description": "Cloud Functions for Firebase",
+  "comment": "Cloud Functions for Firebase",
   "dependencies": {
     "camelcase": "^5.0.0",
     "firebase-admin": "^6.1.0",
