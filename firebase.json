@@ -1,6 +1,6 @@
 {
   "database": {
-    "rules": "firebase/database.rules.json"
+    "rules": "database.rules.json"
   },
   "firestore": {
     "rules": "firebase/firestore.rules",
@@ -9,7 +9,8 @@
   "functions": {
     "predeploy": [
       "npm --prefix ./functions run lint"
-    ]
+    ],
+    "source": "functions"
   },
   "hosting": {
     "public": "build",

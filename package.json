@@ -70,5 +70,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "eslint-plugin-promise": "^4.0.1"
+  }
 }
