@@ -3,14 +3,27 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { ImageCropDialog } from 'rmw-shell/lib/containers/ImageCropDialog'
-import { TextField } from 'redux-form-material-ui'
+import { TextField, DatePicker } from 'redux-form-material-ui'
 import { connect } from 'react-redux'
 import { injectIntl, intlShape } from 'react-intl'
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 import { withRouter } from 'react-router-dom'
 import { withTheme } from '@material-ui/core/styles'
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { TimePicker } from 'material-ui-pickers';
+import { DateTimePicker } from 'material-ui-pickers';
+import {Test} from './Test';
 
 class Form extends Component {
+
+  state = {
+    selectedDate: new Date('2014-08-18T21:11:54'),
+  };
+
+  handleDateChange = date => {
+    this.setState({ selectedDate: date })
+  };
   render() {
     const {
       handleSubmit,
@@ -69,15 +82,18 @@ class Form extends Component {
             />
           </div>
 
+
           <div>
+            
             <Field
               name='start_date'
               disabled={!initialized}
-              component={TextField}
               placeholder={intl.formatMessage({ id: 'start_date_hint' })}
               label={intl.formatMessage({ id: 'start_date_label' })}
               ref='start_date'
               withRef
+              component={TextField} 
+
             />
           </div>
          
