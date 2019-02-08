@@ -22,8 +22,8 @@ import { change, submit } from 'redux-form';
 import isGranted from 'rmw-shell/lib/utils/auth';
 import IconButton from '@material-ui/core/IconButton';
 
-const path = '/trips/';
-const form_name = 'trip';
+
+
 
 const styles = theme => ({
 
@@ -54,7 +54,7 @@ class Trip extends Component {
 
     const { history, match, firebaseApp } = this.props;
     const uid = match.params.uid;
-
+    const path = `/trips/${this.props.auth.uid}/`;
     if (uid) {
       firebaseApp.database().ref().child(`${path}${uid}`).remove().then(() => {
         this.handleClose();
@@ -77,10 +77,12 @@ class Trip extends Component {
       isAuthorised,
       firebaseApp,
       uid,
-      isLoading
+      isLoading,
+      auth
     } = this.props;
 
     //const uid = match.params.uid;
+    const path = `/trips/${auth.uid}/`;
 
     return (
       <Activity
@@ -174,15 +176,15 @@ const mapStateToProps = (state, ownProps) => {
   const { match } = ownProps
 
   const uid = match.params.uid
-
+  const path = `/trips/${auth.uid}/`;
   return {
     intl,
     dialogs,
     uid,
     isGranted: grant => isGranted(state, grant),
     isLoading: isLoading(state, `${path}/${uid}`),
-    isAuthorised: auth.isAuthorised
-
+    isAuthorised: auth.isAuthorised,
+    auth: state.auth
   };
 };
 

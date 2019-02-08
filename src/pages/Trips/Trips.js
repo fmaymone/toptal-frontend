@@ -16,16 +16,19 @@ import isGranted from 'rmw-shell/lib/utils/auth'
 import { Activity, Scrollbar } from 'rmw-shell'
 
 class Trips extends Component {
+  state = {
+    isLoading: true,
+    trips: []
+  };
+  
   componentDidMount () {
-    const { watchList, firebaseApp } = this.props
-
-    let ref = firebaseApp.database().ref('trips').limitToFirst(20)
-
-    watchList(ref)
+    const { watchList, watchPath, firebaseApp, auth } = this.props
+    let ref = firebaseApp.database().ref('/trips/' + auth.uid)
+    watchList(ref, "listTrips")
   }
 
   renderList (trips) {
-    const { history } = this.props
+    const { history, auth } = this.props
 
     if (trips === undefined) {
       return <div />
@@ -35,7 +38,7 @@ class Trips extends Component {
       return <div key={index}>
         <ListItem
           key={index}
-          onClick={() => { history.push(`/trips/edit/${trip.key}`) }}
+          onClick={() => { history.push(`/trips/edit/${auth.uid}/${trip.key}`) }}
           id={index}>
           {trip.val.photoURL && <Avatar src={trip.val.photoURL} alt='bussines' />}
           {!trip.val.photoURL && <Avatar> <Icon > business </Icon>  </Avatar>}
@@ -47,11 +50,11 @@ class Trips extends Component {
   }
 
   render () {
-    const { intl, trips, theme, history, isGranted, isAuthorised} = this.props
+    const { intl, trips, theme, history, isGranted, isAuthorised, isLoading} = this.props
 
     return (
       <Activity
-        isLoading={trips === undefined}
+        isLoading={isLoading}
         containerStyle={{ overflow: 'hidden' }}
         title={intl.formatMessage({ id: 'trips' })}>
         <Scrollbar>
@@ -85,13 +88,13 @@ Trips.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const { auth, lists } = state
+  const { auth, lists, trips } = state
 
   return {
-    trips: lists.trips,
+    trips: lists.listTrips,
     auth,
     isGranted: grant => isGranted(state, grant),
-    isAuthorised: auth.isAuthorised
+    isAuthorised: auth.isAuthorised,
   }
 }
 
