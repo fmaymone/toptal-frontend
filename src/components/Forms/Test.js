@@ -8,13 +8,13 @@ import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pic
 
 const styles = {
   grid: {
-    width: '60%',
+    width: '60%'
   },
 }
 
 class Test extends React.Component {
   state = {
-    selectedDate: new Date('2014-08-18T21:11:54'),
+    selectedDate: new Date('2014-08-18T21:11:55'),
   };
 
   handleDateChange = date => {
