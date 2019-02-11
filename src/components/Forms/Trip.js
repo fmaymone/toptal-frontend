@@ -14,28 +14,53 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import { TimePicker } from 'material-ui-pickers';
 import { DateTimePicker } from 'material-ui-pickers';
 import {Test} from './Test';
+import axios from 'axios';
+import { load as loadAccount } from './account'
+import { initialize } from 'redux-form';
+const data = {
+  // used to populate "account" reducer when "Load" is clicked
+  destination: 'From Data',
+}
 
 class Form extends Component {
 
-  state = {
-    selectedDate: new Date('2014-08-18T21:11:54'),
-  };
+  componentDidMount () {
+    const tripId = this.props.match.params.uid;
+    if(tripId){
+      this.fetchData(tripId);
+    }
+  }
 
-  handleDateChange = date => {
-    this.setState({ selectedDate: date })
-  };
+  fetchData = async (tripId) => {
+    axios.defaults.headers.common['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDk5NzYyMDR9.nFjiVC4vcHyimZ8wauW1VraoXRydIz7rYIoFXHp7c_A';
+    axios.defaults.headers.common['Accept'] = 'application/vnd.trips.v1+json';
+    await axios.get(`https://toptal-backend-fmaymone.c9users.io/trips/${tripId}`) 
+    .then(res => {
+      const trip = res.data;
+      this.setState({ 
+        trip: trip,
+        isLoading: false,
+        initialValues: trip
+       });
+    })
+    console.log('Terminou de carregar')
+  }
+
   render() {
     const {
-      handleSubmit,
       intl,
-      initialized,
       setDialogIsOpen,
       dialogs,
-      match
+      match,
+      values,
+      handleSubmit,
+      load
     } = this.props
 
     const uid = match.params.uid
 
+    const initialized = true;
+    
     return (
       <form onSubmit={handleSubmit} style={{
         height: '100%',
@@ -47,28 +72,6 @@ class Form extends Component {
         <button type='submit' style={{ display: 'none' }} />
 
         <div style={{ margin: 15, display: 'flex', flexDirection: 'column' }}>
-
-          <AvatarImageField
-            name='photoURL'
-            disabled={!initialized}
-            uid={uid}
-            change={this.props.change}
-            initialized={initialized}
-            intl={intl}
-            path={'trips'}
-          />
-
-          <div>
-            <Field
-              name='name'
-              disabled={!initialized}
-              component={TextField}
-              placeholder={intl.formatMessage({ id: 'name_hint' })}
-              label={intl.formatMessage({ id: 'name_label' })}
-              ref='name'
-              withRef
-            />
-          </div>
 
           <div>
             <Field
@@ -122,16 +125,6 @@ class Form extends Component {
               withRef
             />
           </div>
-
-          <ImageCropDialog
-            path={`trips/${uid}`}
-            fileName={`photoURL`}
-            onUploadSuccess={(s) => { this.handlePhotoUploadSuccess(s) }}
-            open={dialogs.new_company_photo !== undefined}
-            src={dialogs.new_company_photo}
-            handleClose={() => { setDialogIsOpen('new_company_photo', undefined) }}
-            title={intl.formatMessage({ id: 'change_photo' })}
-          />
         </div>
 
       </form>
@@ -140,7 +133,6 @@ class Form extends Component {
 }
 
 Form.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
   initialized: PropTypes.bool.isRequired,
   setDialogIsOpen: PropTypes.func.isRequired,
@@ -148,18 +140,25 @@ Form.propTypes = {
   match: PropTypes.object.isRequired
 }
 
-Form = reduxForm({ form: 'trip' })(Form)
-const selector = formValueSelector('trip')
+Form = reduxForm({ form: 'trip', enableReinitialize : true })(Form)
+
+// Form = connect(
+//   state => ({
+//     initialValues: this.state.trip
+//   })  
+// )(Form)
+
+// const selector = formValueSelector('trip')
 
 const mapStateToProps = state => {
-  const { intl, vehicleTypes, users, dialogs } = state
+  const { intl, vehicleTypes, users, dialogs, trip } = state
 
   return {
     intl,
     vehicleTypes,
     users,
     dialogs,
-    photoURL: selector(state, 'photoURL')
+    initialValues: trip
   }
 }
 

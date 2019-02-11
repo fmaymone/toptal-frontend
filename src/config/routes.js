@@ -15,7 +15,7 @@ const routes = [
   <RestrictedRoute type="private" path="/" exact component={AsyncDashboard} />,
   <RestrictedRoute type="private" path="/dashboard" exact component={AsyncDashboard} />,
   <RestrictedRoute type="private" path="/trips" exact component={AsyncTrips} />,
-  <RestrictedRoute type="private" path="/trips/edit/:user_id/:uid" exact component={AsyncTrip} />,
+  <RestrictedRoute type="private" path="/trips/edit/:uid" exact component={AsyncTrip} />,
   <RestrictedRoute type="private" path="/trips/create" exact component={AsyncTrip} />
 ]
 

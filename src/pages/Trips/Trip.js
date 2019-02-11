@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
 import { Activity } from 'rmw-shell'
-//import { ResponsiveMenu } from 'material-ui-responsive-menu';
 import { withTheme, withStyles } from '@material-ui/core/styles'
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
-import CompanyForm from '../../components/Forms/Trip';
+import TripForm from '../../components/Forms/Trip';
 import { withRouter } from 'react-router-dom';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
@@ -16,13 +15,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withFirebase } from 'firekit-provider'
-import FireForm from 'fireform'
 import { isLoading } from 'firekit'
 import { change, submit } from 'redux-form';
 import isGranted from 'rmw-shell/lib/utils/auth';
 import IconButton from '@material-ui/core/IconButton';
-
-
+import axios from 'axios';
 
 
 const styles = theme => ({
@@ -35,8 +32,6 @@ class Trip extends Component {
   validate = (values) => {
     const { intl } = this.props;
     const errors = {}
-
-    errors.name = !values.name ? intl.formatMessage({ id: 'error_required_field' }) : '';
     errors.destination = !values.destination ? intl.formatMessage({ id: 'error_required_field' }) : '';
     errors.start_date = !values.start_date ? intl.formatMessage({ id: 'error_required_field' }) : '';
 
@@ -45,9 +40,7 @@ class Trip extends Component {
 
   handleClose = () => {
     const { setDialogIsOpen } = this.props;
-
     setDialogIsOpen('delete_trip', false);
-
   }
 
   handleDelete = () => {
@@ -61,6 +54,17 @@ class Trip extends Component {
         history.goBack();
       })
     }
+  }
+
+  handleSave = async (values) => {
+    
+    axios.defaults.headers.common['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDk5NzYyMDR9.nFjiVC4vcHyimZ8wauW1VraoXRydIz7rYIoFXHp7c_A';
+    axios.defaults.headers.common['Accept'] = 'application/vnd.trips.v1+json';
+    await axios.post(`https://toptal-backend-fmaymone.c9users.io/trips`, values) 
+    .then(res => {
+      console.log(res)
+    })
+   
   }
 
 
@@ -81,7 +85,6 @@ class Trip extends Component {
       auth
     } = this.props;
 
-    //const uid = match.params.uid;
     const path = `/trips/${auth.uid}/`;
 
     return (
@@ -94,7 +97,7 @@ class Trip extends Component {
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
-                onClick={() => { submit('trip') }}
+                onClick={() => {submit('trip')}}
               >
                 <Icon className="material-icons" >save</Icon>
               </IconButton>
@@ -116,17 +119,14 @@ class Trip extends Component {
         title={intl.formatMessage({ id: match.params.uid ? 'edit_trip' : 'create_trip' })}>
 
         <div style={{ margin: 15, display: 'flex' }}>
-
-          <FireForm
-            firebaseApp={firebaseApp}
-            name={'trip'}
-            path={`${path}`}
-            validate={this.validate}
-            onSubmitSuccess={(values) => { history.push('/trips'); }}
-            onDelete={(values) => { history.push('/trips'); }}
-            uid={uid}>
-            <CompanyForm />
-          </FireForm>
+          <TripForm onSubmit={this.handleSave} 
+            onSubmitSuccess={values => {
+              history.push("/trips");
+            }}
+            onDelete={values => {
+              history.push("/trips");
+            }}
+          />
         </div>
 
         <Dialog
@@ -150,10 +150,6 @@ class Trip extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-
-
-
-
       </Activity>
     );
   }

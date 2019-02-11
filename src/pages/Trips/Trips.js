@@ -14,6 +14,7 @@ import Avatar from '@material-ui/core/Avatar'
 import { withFirebase } from 'firekit-provider'
 import isGranted from 'rmw-shell/lib/utils/auth'
 import { Activity, Scrollbar } from 'rmw-shell'
+import axios from 'axios';
 
 class Trips extends Component {
   state = {
@@ -22,10 +23,22 @@ class Trips extends Component {
   };
   
   componentDidMount () {
-    const { watchList, watchPath, firebaseApp, auth } = this.props
-    let ref = firebaseApp.database().ref('/trips/' + auth.uid)
-    watchList(ref, "listTrips")
+    this.fetchData();
   }
+
+  fetchData = async () => {
+    axios.defaults.headers.common['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDk5NzYyMDR9.nFjiVC4vcHyimZ8wauW1VraoXRydIz7rYIoFXHp7c_A';
+    axios.defaults.headers.common['Accept'] = 'application/vnd.trips.v1+json';
+    await axios.get(`https://toptal-backend-fmaymone.c9users.io/trips`) 
+    .then(res => {
+      const trips = res.data;
+      this.setState({ 
+        trips: trips,
+        isLoading: false
+       });
+    })
+  }
+
 
   renderList (trips) {
     const { history, auth } = this.props
@@ -38,11 +51,10 @@ class Trips extends Component {
       return <div key={index}>
         <ListItem
           key={index}
-          onClick={() => { history.push(`/trips/edit/${auth.uid}/${trip.key}`) }}
+          id={trip.id}
+          onClick={() => { history.push(`/trips/edit/${trip.id}`) }}
           id={index}>
-          {trip.val.photoURL && <Avatar src={trip.val.photoURL} alt='bussines' />}
-          {!trip.val.photoURL && <Avatar> <Icon > business </Icon>  </Avatar>}
-          <ListItemText primary={trip.val.name} secondary={trip.val.destination} />
+          <ListItemText primary={trip.destination} secondary={trip.start_date} />
         </ListItem>
         <Divider inset />
       </div>
@@ -50,8 +62,14 @@ class Trips extends Component {
   }
 
   render () {
-    const { intl, trips, theme, history, isGranted, isAuthorised, isLoading} = this.props
+    const { intl,  theme, history, isAuthorised } = this.props
 
+    const { trips, isLoading} = this.state
+
+    if(isLoading){
+      return <div/>
+    }
+    else{
     return (
       <Activity
         isLoading={isLoading}
@@ -78,20 +96,21 @@ class Trips extends Component {
 
       </Activity>
     )
+          }
   }
 }
 
 Trips.propTypes = {
-  trips: PropTypes.array,
   history: PropTypes.object,
   isGranted: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
-  const { auth, lists, trips } = state
+  const { auth, trips, isLoading } = state
 
   return {
-    trips: lists.listTrips,
+    trips,
+    isLoading,
     auth,
     isGranted: grant => isGranted(state, grant),
     isAuthorised: auth.isAuthorised,
