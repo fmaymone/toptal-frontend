@@ -19,10 +19,6 @@ import { load as loadAccount } from './account'
 import { initialize } from 'redux-form'
 
 
-const data = {
-  // used to populate "account" reducer when "Load" is clicked
-  destination: 'From Data',
-}
 
 class Form extends Component {
 
@@ -126,14 +122,14 @@ const selector = formValueSelector('trip')
 
 const mapStateToProps = (state, ownProps) => {
   const { intl, vehicleTypes, users, dialogs, trip } = state
-  console.log('asdasdasd')
 
   return {
     intl,
     vehicleTypes,
     users,
     dialogs,
-    initialValues: ownProps.initValues
+    initialValues: ownProps.initValues,
+    selector
 
   }
 }

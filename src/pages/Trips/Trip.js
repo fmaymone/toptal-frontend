@@ -41,6 +41,11 @@ class Trip extends Component {
     return errors
   }
 
+  handleUpdate = (trip) => {
+    this.props.actions.UpdateTrip(trip)
+    this.props.history.push('/trips');
+  }
+
   handleClose = () => {
     const { setDialogIsOpen } = this.props;
     setDialogIsOpen('delete_trip', false);
@@ -59,15 +64,8 @@ class Trip extends Component {
     }
   }
 
-  handleSave = async (values) => {
-    
-    axios.defaults.headers.common['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDk5NzYyMDR9.nFjiVC4vcHyimZ8wauW1VraoXRydIz7rYIoFXHp7c_A';
-    axios.defaults.headers.common['Accept'] = 'application/vnd.trips.v1+json';
-    await axios.post(`https://toptal-backend-fmaymone.c9users.io/trips`, values) 
-    .then(res => {
-      console.log(res)
-    })
-   
+  handleSave = (values) => {
+    //console.log(this.props);
   }
 
 
@@ -79,10 +77,10 @@ class Trip extends Component {
       setDialogIsOpen,
       dialogs,
       match,
-      submit,
       isGranted,
       isAuthorised,
       uid,
+      submit,
       isLoading,
       trips
     } = this.props;
@@ -99,7 +97,7 @@ class Trip extends Component {
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
-                onClick={() => {submit('trip')}}
+                onClick={() => submit("trip")}
               >
                 <Icon className="material-icons" >save</Icon>
               </IconButton>
@@ -121,7 +119,8 @@ class Trip extends Component {
         title={intl.formatMessage({ id: match.params.uid ? 'edit_trip' : 'create_trip' })}>
 
         <div style={{ margin: 15, display: 'flex' }}>
-          <TripForm onSubmit={this.handleSave} 
+          <TripForm  
+            onSubmit={this.handleSave}
             onSubmitSuccess={values => {
               history.push("/trips");
             }}
@@ -129,6 +128,8 @@ class Trip extends Component {
               history.push("/trips");
             }}
             initValues = {trip}
+            handleUpdate = {this.handleUpdate}
+            handleSubmit={this.handleSave}
           />
         </div>
 
@@ -171,7 +172,7 @@ Trip.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
-  const { auth, intl, dialogs, tripReducer, trips } = state;
+  const { auth, intl, dialogs, submit, tripReducer, trips, form } = state;
   const { match } = ownProps
 
   const uid = match.params.uid
@@ -184,16 +185,18 @@ const mapStateToProps = (state, ownProps) => {
     isLoading: isLoading(state, `${path}/${uid}`),
     isAuthorised: auth.isAuthorised,
     auth: state.auth,
-    trips
+    trips,
+    submit,
+    form
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      actions: bindActionCreators(TripActions, dispatch, setDialogIsOpen, change, submit)
+      actions: bindActionCreators(TripActions, dispatch, setDialogIsOpen, change )
   }
 }
 
 export default connect(
-  mapStateToProps, mapDispatchToProps
+  mapStateToProps, {mapDispatchToProps, submit}
 )(injectIntl(withRouter(withFirebase(withTheme()(withStyles(styles, { withTheme: true })(Trip))))))
