@@ -17,6 +17,7 @@ import {Test} from './Test';
 import axios from 'axios';
 import { load as loadAccount } from './account'
 import { initialize } from 'redux-form';
+import config from '../../config'
 const data = {
   // used to populate "account" reducer when "Load" is clicked
   destination: 'From Data',
