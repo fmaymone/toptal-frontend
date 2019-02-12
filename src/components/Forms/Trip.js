@@ -9,14 +9,16 @@ import { injectIntl, intlShape } from 'react-intl'
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 import { withRouter } from 'react-router-dom'
 import { withTheme } from '@material-ui/core/styles'
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { TimePicker } from 'material-ui-pickers';
-import { DateTimePicker } from 'material-ui-pickers';
-import {Test} from './Test';
-import axios from 'axios';
+import DateFnsUtils from '@date-io/date-fns'
+import { MuiPickersUtilsProvider } from 'material-ui-pickers'
+import { TimePicker } from 'material-ui-pickers'
+import { DateTimePicker } from 'material-ui-pickers'
+import {Test} from './Test'
+import axios from 'axios'
 import { load as loadAccount } from './account'
-import { initialize } from 'redux-form';
+import { initialize } from 'redux-form'
+import { fetchTrip } from '../../store/actions/tripActions';
+
 const data = {
   // used to populate "account" reducer when "Load" is clicked
   destination: 'From Data',
@@ -25,23 +27,19 @@ const data = {
 class Form extends Component {
 
   componentDidMount () {
-    const tripId = this.props.match.params.uid;
+    const tripId = this.props.match.params.uid
     if(tripId){
-      this.fetchData(tripId);
+      this.fetchData(tripId)
     }
   }
 
   fetchData = async (tripId) => {
-    axios.defaults.headers.common['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDk5NzYyMDR9.nFjiVC4vcHyimZ8wauW1VraoXRydIz7rYIoFXHp7c_A';
-    axios.defaults.headers.common['Accept'] = 'application/vnd.trips.v1+json';
+    axios.defaults.headers.common['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDk5NzYyMDR9.nFjiVC4vcHyimZ8wauW1VraoXRydIz7rYIoFXHp7c_A'
+    axios.defaults.headers.common['Accept'] = 'application/vnd.trips.v1+json'
     await axios.get(`https://toptal-backend-fmaymone.c9users.io/trips/${tripId}`) 
-    .then(res => {
-      const trip = res.data;
-      this.setState({ 
-        trip: trip,
-        isLoading: false,
-        initialValues: trip
-       });
+      .then(res => {
+        const trip = res.data
+      this.props.fillTheForm(trip)
     })
     console.log('Terminou de carregar')
   }
@@ -59,7 +57,7 @@ class Form extends Component {
 
     const uid = match.params.uid
 
-    const initialized = true;
+    const initialized = true
     
     return (
       <form onSubmit={handleSubmit} style={{
@@ -162,6 +160,13 @@ const mapStateToProps = state => {
   }
 }
 
+const fillTheForm = (dispatch) => (trip) => {
+  // here you dispatch the action and update your application state
+  // in your reducer when this action is dispatched,
+  // then mapStateToProps should be called and the data you just
+  // passed in your reducer should be in (state)
+  console.log('Im here')
+}
 export default connect(
-  mapStateToProps, { setDialogIsOpen }
+  mapStateToProps, { setDialogIsOpen, fillTheForm, fetchTrip }
 )(injectIntl(withRouter(withTheme()(Form))))
