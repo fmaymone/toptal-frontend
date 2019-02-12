@@ -20,7 +20,8 @@ import { change, submit } from 'redux-form';
 import isGranted from 'rmw-shell/lib/utils/auth';
 import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios';
-import {fetchTrip} from '../../store/actions/tripActions'
+import * as TripActions from '../../store/actions/tripActions'
+import { bindActionCreators } from 'redux';
 
 
 const styles = theme => ({
@@ -30,10 +31,6 @@ const styles = theme => ({
 
 
 class Trip extends Component {
-
-  componentDidMount () {
-    this.props.fetchTrip()
-  }
 
   validate = (values) => {
     const { intl } = this.props;
@@ -85,14 +82,12 @@ class Trip extends Component {
       submit,
       isGranted,
       isAuthorised,
-      firebaseApp,
       uid,
       isLoading,
-      auth, 
-      initialValues
+      trips
     } = this.props;
 
-    const path = `/trips/${auth.uid}/`;
+    const trip = trips.filter(u => u.id == uid)[0];
 
     return (
       <Activity
@@ -133,7 +128,7 @@ class Trip extends Component {
             onDelete={values => {
               history.push("/trips");
             }}
-            initialValues = {initialValues}
+            initValues = {trip}
           />
         </div>
 
@@ -176,7 +171,7 @@ Trip.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
-  const { auth, intl, dialogs, tripReducer } = state;
+  const { auth, intl, dialogs, tripReducer, trips } = state;
   const { match } = ownProps
 
   const uid = match.params.uid
@@ -189,10 +184,16 @@ const mapStateToProps = (state, ownProps) => {
     isLoading: isLoading(state, `${path}/${uid}`),
     isAuthorised: auth.isAuthorised,
     auth: state.auth,
-    initialValues: tripReducer
+    trips
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+      actions: bindActionCreators(TripActions, dispatch, setDialogIsOpen, change, submit)
+  }
+}
+
 export default connect(
-  mapStateToProps, { setDialogIsOpen, change, submit, fetchTrip }
+  mapStateToProps, mapDispatchToProps
 )(injectIntl(withRouter(withFirebase(withTheme()(withStyles(styles, { withTheme: true })(Trip))))))

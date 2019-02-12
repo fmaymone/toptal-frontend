@@ -17,7 +17,7 @@ import {Test} from './Test'
 import axios from 'axios'
 import { load as loadAccount } from './account'
 import { initialize } from 'redux-form'
-import { fetchTrip } from '../../store/actions/tripActions';
+
 
 const data = {
   // used to populate "account" reducer when "Load" is clicked
@@ -25,24 +25,6 @@ const data = {
 }
 
 class Form extends Component {
-
-  componentDidMount () {
-    const tripId = this.props.match.params.uid
-    if(tripId){
-      this.fetchData(tripId)
-    }
-  }
-
-  fetchData = async (tripId) => {
-    axios.defaults.headers.common['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDk5NzYyMDR9.nFjiVC4vcHyimZ8wauW1VraoXRydIz7rYIoFXHp7c_A'
-    axios.defaults.headers.common['Accept'] = 'application/vnd.trips.v1+json'
-    await axios.get(`https://toptal-backend-fmaymone.c9users.io/trips/${tripId}`) 
-      .then(res => {
-        const trip = res.data
-      //this.props.fillTheForm(trip)
-    })
-    console.log('Terminou de carregar')
-  }
 
   render() {
     const {
@@ -144,17 +126,18 @@ const selector = formValueSelector('trip')
 
 const mapStateToProps = (state, ownProps) => {
   const { intl, vehicleTypes, users, dialogs, trip } = state
+  console.log('asdasdasd')
 
   return {
     intl,
     vehicleTypes,
     users,
     dialogs,
-    initialValues: ownProps.initialValues
+    initialValues: ownProps.initValues
 
   }
 }
 
 export default connect(
-  mapStateToProps, { setDialogIsOpen, fetchTrip }
+  mapStateToProps, { setDialogIsOpen  }
 )(injectIntl(withRouter(withTheme()(Form))))

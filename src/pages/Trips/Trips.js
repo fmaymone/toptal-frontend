@@ -15,6 +15,8 @@ import { withFirebase } from 'firekit-provider'
 import isGranted from 'rmw-shell/lib/utils/auth'
 import { Activity, Scrollbar } from 'rmw-shell'
 import axios from 'axios';
+import * as TripActions from '../../store/actions/tripActions'
+import { bindActionCreators } from 'redux';
 
 class Trips extends Component {
   state = {
@@ -27,16 +29,10 @@ class Trips extends Component {
   }
 
   fetchData = async () => {
-    axios.defaults.headers.common['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDk5NzYyMDR9.nFjiVC4vcHyimZ8wauW1VraoXRydIz7rYIoFXHp7c_A';
-    axios.defaults.headers.common['Accept'] = 'application/vnd.trips.v1+json';
-    await axios.get(`https://toptal-backend-fmaymone.c9users.io/trips`) 
-    .then(res => {
-      const trips = res.data;
-      this.setState({ 
-        trips: trips,
-        isLoading: false
-       });
-    })
+
+    await this.props.actions.GetTrips();
+    this.setState({isLoading: false})
+
   }
 
 
@@ -51,7 +47,6 @@ class Trips extends Component {
       return <div key={index}>
         <ListItem
           key={index}
-          id={trip.id}
           onClick={() => { history.push(`/trips/edit/${trip.id}`) }}
           id={index}>
           <ListItemText primary={trip.destination} secondary={trip.start_date} />
@@ -62,9 +57,9 @@ class Trips extends Component {
   }
 
   render () {
-    const { intl,  theme, history, isAuthorised } = this.props
+    const { intl,  theme, history, isAuthorised, trips } = this.props
 
-    const { trips, isLoading} = this.state
+    const { isLoading} = this.state
 
     if(isLoading){
       return <div/>
@@ -117,6 +112,12 @@ const mapStateToProps = (state) => {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+      actions: bindActionCreators(TripActions, dispatch)
+  }
+}
+
 export default connect(
-  mapStateToProps
+  mapStateToProps, mapDispatchToProps
 )(injectIntl(withTheme()(withRouter(withFirebase(Trips)))))
