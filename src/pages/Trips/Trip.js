@@ -20,6 +20,7 @@ import { change, submit } from 'redux-form';
 import isGranted from 'rmw-shell/lib/utils/auth';
 import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios';
+import {fetchTrip} from '../../store/actions/tripActions'
 
 
 const styles = theme => ({
@@ -27,7 +28,12 @@ const styles = theme => ({
 })
 
 
+
 class Trip extends Component {
+
+  componentDidMount () {
+    this.props.fetchTrip()
+  }
 
   validate = (values) => {
     const { intl } = this.props;
@@ -82,7 +88,8 @@ class Trip extends Component {
       firebaseApp,
       uid,
       isLoading,
-      auth
+      auth, 
+      initialValues
     } = this.props;
 
     const path = `/trips/${auth.uid}/`;
@@ -126,6 +133,7 @@ class Trip extends Component {
             onDelete={values => {
               history.push("/trips");
             }}
+            initialValues = {initialValues}
           />
         </div>
 
@@ -168,7 +176,7 @@ Trip.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
-  const { auth, intl, dialogs } = state;
+  const { auth, intl, dialogs, tripReducer } = state;
   const { match } = ownProps
 
   const uid = match.params.uid
@@ -180,10 +188,11 @@ const mapStateToProps = (state, ownProps) => {
     isGranted: grant => isGranted(state, grant),
     isLoading: isLoading(state, `${path}/${uid}`),
     isAuthorised: auth.isAuthorised,
-    auth: state.auth
+    auth: state.auth,
+    initialValues: tripReducer
   };
 };
 
 export default connect(
-  mapStateToProps, { setDialogIsOpen, change, submit }
+  mapStateToProps, { setDialogIsOpen, change, submit, fetchTrip }
 )(injectIntl(withRouter(withFirebase(withTheme()(withStyles(styles, { withTheme: true })(Trip))))))

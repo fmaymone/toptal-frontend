@@ -39,7 +39,7 @@ class Form extends Component {
     await axios.get(`https://toptal-backend-fmaymone.c9users.io/trips/${tripId}`) 
       .then(res => {
         const trip = res.data
-      this.props.fillTheForm(trip)
+      //this.props.fillTheForm(trip)
     })
     console.log('Terminou de carregar')
   }
@@ -140,15 +140,9 @@ Form.propTypes = {
 
 Form = reduxForm({ form: 'trip', enableReinitialize : true })(Form)
 
-// Form = connect(
-//   state => ({
-//     initialValues: this.state.trip
-//   })  
-// )(Form)
+const selector = formValueSelector('trip')
 
-// const selector = formValueSelector('trip')
-
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   const { intl, vehicleTypes, users, dialogs, trip } = state
 
   return {
@@ -156,17 +150,11 @@ const mapStateToProps = state => {
     vehicleTypes,
     users,
     dialogs,
-    initialValues: trip
+    initialValues: ownProps.initialValues
+
   }
 }
 
-const fillTheForm = (dispatch) => (trip) => {
-  // here you dispatch the action and update your application state
-  // in your reducer when this action is dispatched,
-  // then mapStateToProps should be called and the data you just
-  // passed in your reducer should be in (state)
-  console.log('Im here')
-}
 export default connect(
-  mapStateToProps, { setDialogIsOpen, fillTheForm, fetchTrip }
+  mapStateToProps, { setDialogIsOpen, fetchTrip }
 )(injectIntl(withRouter(withTheme()(Form))))
