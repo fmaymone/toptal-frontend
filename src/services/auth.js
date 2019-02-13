@@ -5,6 +5,7 @@ export default class AuthService {
         this._client = axios.create({baseURL: baseUrl});
         this._authToken = "";
         this._authenticated = false;
+        this.promise = null;
     }
 
     async signUp(name, email, password, passwordConfirmation) {
@@ -25,13 +26,20 @@ export default class AuthService {
     }
 
     async login(email, password) {
-        let response = await this._client.post("/auth/login", {
-            email: email, 
-            password: password
-        });
-        this._authenticated = true;
-        this._authToken = response.data.auth_token;
-        return this._authToken;
+        try {
+            let response = await this._client.post("/auth/login", {
+                email: email, 
+                password: password
+            });
+            this.promise = null;
+            this._authenticated = true;
+            this._authToken = response.data.auth_token;
+            return this._authToken;
+        }
+        catch(ex) {
+            console.log(ex.message);
+            throw ex;
+        }
     }
 
     isAuthenticated() {

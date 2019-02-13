@@ -30,10 +30,8 @@ class Trips extends Component {
   }
 
   fetchData = async () => {
-
     await this.props.actions.GetTrips();
     this.setState({isLoading: false})
-
   }
 
 

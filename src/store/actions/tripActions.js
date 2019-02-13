@@ -1,8 +1,14 @@
 //Import the Trip API 
 
-import { TripApi } from "../../api/tripApi"
+import tripService from "../../services/toptal-api"
 
+//SignUp
+export const SIGNUP_SUCCESS = '[Trip] SIGNUP_SUCCESS' 
+export const SIGNUP_ERROR = '[Trip] SIGNUP_ERROR'
 
+//Login
+export const LOGIN_SUCCESS = '[Trip] LOGIN_SUCCESS' 
+export const LOGIN_ERROR = '[Trip] LOGIN_ERROR'
 
 //Create
 export const CREATE_TRIP = '[Trip] CREATE_TRIP' 
@@ -37,8 +43,46 @@ export const DELETE_TRIP_SUCCESS = '[Trip] DELETE_TRIP_SUCCESS'
 export const DELETE_TRIP_ERROR = '[Trip] DELETE_TRIP_ERROR' 
 
 
+export function SignUpSuccess(user) {
+    return {
+        type: SIGNUP_SUCCESS,
+        user: user
+    }
+}
 
+export function SignUpError() {
+    return {
+        type: SIGNUP_ERROR
+    }
+}
  
+export function SignUp(name, email, password, password_confirmation) {
+    return (dispatch, getState) => {
+        return tripService.signUp(name, email, password, password_confirmation).then(res => {
+            if (res) {
+                dispatch(SignUpSuccess({name: name, email: email, password: password}))
+            } else {
+                dispatch(SignUpError())
+            }
+        })
+    }
+}
+
+export function LoginSuccess(token) {
+    return {
+        type: LOGIN_SUCCESS,
+        token: token
+    }
+}
+
+export function Login(email, password) {
+    return (dispatch, getState) => {
+        return tripService.login(email, password).then( token => {
+            dispatch(LoginSuccess(token))
+        })
+    }
+}
+
 //These are the action types Also ordered in CRUD Order.
 
 //Create
@@ -47,8 +91,8 @@ export const DELETE_TRIP_ERROR = '[Trip] DELETE_TRIP_ERROR'
 
 export function CreateTrip(trip){
     return (dispatch, getState) => {
-        return TripApi.createTrip(trip).then(res => {
-            dispatch(CreateTripSuccess(res.data.data))
+        return tripService.create(trip).then(res => {
+            dispatch(CreateTripSuccess(res))
         })
     }
 }
@@ -62,7 +106,7 @@ export function CreateTripSuccess(trip){
 
 export function GetTrip(id){
     return (dispatch, getState) => {
-        return TripApi.getTrip(id).then(res => {
+        return tripService.get(id).then(res => {
             dispatch(GetTripSuccess(res))
         })
     }
@@ -77,7 +121,7 @@ export function GetTripSuccess(trip){
 
 export function GetTrips(){
     return (dispatch, getState) => {
-        return TripApi.getTrips().then(res => {
+        return tripService.list().then(res => {
             dispatch(GetTripsSuccess(res))
         })
     }
@@ -86,7 +130,7 @@ export function GetTrips(){
 export function GetTripsSuccess(trips){
     return {
         type:GET_TRIPS_SUCCESS,
-        trips
+        trips: trips
     }
 }
 
@@ -106,19 +150,15 @@ export function CancelEditing(_id) {
 }
 
 export function UpdateTrip(trip) {
-    // return (dispatch, getState) => {
-        
-    
-
-    //     dispatch({
-    //         type: UPDATE_TRIP,
-    //         trip
-    //     })
-    //     TripApi.updateTrip(trip).then(res => {
-    //         dispatch(UpdateTripSuccess(res.data.data))
-    //     })
-    // }
-    TripApi.updateTrip(trip)
+    return (dispatch, getState) => {
+        dispatch({
+            type: UPDATE_TRIP,
+            trip: trip
+        })
+        tripService.update(trip).then(() => {
+            dispatch(UpdateTripSuccess(trip))
+        })
+    }
 }
 export function UpdateTripSuccess(trip) {
     return {
@@ -134,19 +174,25 @@ export function DeleteTrip(trip) {
     return (dispatch, getState) => {
         dispatch({
             type: DELETE_TRIP,
-            trip
+            trip: trip
         })
-        TripApi.removeTrip(trip).then(res => {
-            if (res.status == 204) {
-                dispatch(DeleteTripSuccess(trip))
-            }
+        tripService.delete(trip).then(() => {
+            dispatch(DeleteTripSuccess(trip))
+        }).catch(error => {
+            dispatch(DeleteTripError(error))
         })
     }
 }
 export function DeleteTripSuccess(trip) {
     return {
         type: DELETE_TRIP_SUCCESS,
-        trip,
-        _id: trip._id
+        _id: trip
+    }
+}
+
+export function DeleteTripError(error) {
+    return {
+        type: DELETE_TRIP_ERROR,
+        error: error
     }
 }
