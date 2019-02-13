@@ -57,7 +57,7 @@ class Trip extends Component {
 
   handleSave = (values) => {
     if(values.id){
-      this.handleUpdate(values);
+      this.props.UpdateTrip(values);
     }else{
       this.props.CreateTrip(values);
     }

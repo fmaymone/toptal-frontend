@@ -84,12 +84,6 @@ export function Login(email, password) {
     }
 }
 
-//These are the action types Also ordered in CRUD Order.
-
-//Create
-
-//The dispatch and getstate function is provided by the Redux-Thunk middleware, we can dispatch actions with it.
-
 export function CreateTrip(trip){
     return (dispatch, getState) => {
         return tripService.create(trip).then(res => {
@@ -135,8 +129,6 @@ export function GetTripsSuccess(trips){
     }
 }
 
-
-//Update
 export function StartEditing(_id) {
     return {
         type: START_EDITING,
@@ -169,8 +161,6 @@ export function UpdateTripSuccess(trip) {
     }
 }
 
-
-//Delete
 export function DeleteTrip(trip, history) {
     return (dispatch, getState) => {
         dispatch({
