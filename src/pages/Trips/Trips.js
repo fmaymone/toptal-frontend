@@ -29,11 +29,13 @@ class Trips extends Component {
     this.fetchData();
   }
 
-  fetchData = async () => {
+  componentWillMount () {
+    this.fetchData();
+  }
 
+  fetchData = async () => {
     await this.props.actions.GetTrips();
     this.setState({isLoading: false})
-
   }
 
 
@@ -115,7 +117,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      actions: bindActionCreators(TripActions, dispatch)
+      actions: bindActionCreators(TripActions, dispatch),
+      
   }
 }
 

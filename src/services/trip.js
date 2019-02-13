@@ -2,8 +2,17 @@ import AuthService from "./auth";
 import { Exception } from "handlebars";
 
 export default class TripService extends AuthService {
+    static instance = null;
+
     constructor(baseUrl) {
         super(baseUrl);
+        this.promise = this.login("mouse@test.com", "password");
+    }
+
+    static create(baseUrl) {
+        if (TripService.instance === null)
+            TripService.instance = new TripService(baseUrl);
+        return TripService.instance;
     }
 
     defaultConfig() {
@@ -11,17 +20,20 @@ export default class TripService extends AuthService {
             headers: {
                 Authorization: this._authToken,
                 Accept: "application/vnd.trips.v1+json",
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }
         };
     }
 
     async list() {
+        if (this.promise != null) {
+            await this.promise;
+        }
         if (!this._authenticated) {
             throw new Exception("Not Authenticated");
         }
         try {
-            let response = await this._client.get("/trips", defautConfig());
+            let response = await this._client.get("/trips", this.defaultConfig());
             console.log("[listTrips]: " + response.data);
             return response.data;
         }
@@ -41,8 +53,9 @@ export default class TripService extends AuthService {
                 start_date: trip.start_date,
                 end_date: trip.end_date,
                 comment: trip.comment
-            }, defautConfig());
+            }, this.defaultConfig());
             console.log("[createTrip]: " + response.data);
+            return response.data;
         }
         catch(ex) {
             console.log(ex.message)
@@ -55,7 +68,7 @@ export default class TripService extends AuthService {
             throw new Exception("Not Authenticated");
         }
         try {
-            let response = await this._client.put(`/trips/${trip.id}`, trip, defautConfig());
+            let response = await this._client.patch(`/trips/${trip.id}`, trip, this.defaultConfig());
             console.log("[updateTrip]: ok");
         }
         catch(ex) {
@@ -69,8 +82,23 @@ export default class TripService extends AuthService {
             throw new Exception("Not Authenticated");
         }
         try {
-            let response = await this._client.delete(`/trips/${tripId}`, defautConfig());
+            let response = await this._client.delete(`/trips/${tripId}`, this.defaultConfig());
             console.log("[deleteTrip]: ok");
+        }
+        catch(ex) {
+            console.log(ex.message)
+            throw ex;
+        }
+    }
+
+    async get(tripId) {
+        if (!this._authenticated) {
+            throw new Exception("Not Authenticated");
+        }
+        try {
+            let response = await this._client.get(`/trips/${tripId}`, this.defaultConfig());
+            console.log("[getTrip]: ok");
+            return response.data;
         }
         catch(ex) {
             console.log(ex.message)

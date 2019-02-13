@@ -20,7 +20,7 @@ import { change, submit } from 'redux-form';
 import isGranted from 'rmw-shell/lib/utils/auth';
 import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios';
-import {UpdateTrip} from '../../store/actions/tripActions'
+import * as TripActions from '../../store/actions/tripActions'
 import { bindActionCreators } from 'redux';
 
 
@@ -42,23 +42,24 @@ class Trip extends Component {
   }
 
   handleUpdate = (trip) => {
-    UpdateTrip(trip)
+    this.props.UpdateTrip(trip)
   }
 
   handleClose = () => {
-    const { setDialogIsOpen } = this.props;
+    const { setDialogIsOpen } = this.props.actions;
     setDialogIsOpen('delete_trip', false);
   }
 
   handleDelete = () => {
-
+    const { uid, history } = this.props;
+    this.props.DeleteTrip(uid, history);
   }
 
   handleSave = (values) => {
     if(values.id){
-      this.handleUpdate(values);
+      this.props.UpdateTrip(values);
     }else{
-      console.log(values);
+      this.props.CreateTrip(values);
     }
     
   }
@@ -69,17 +70,19 @@ class Trip extends Component {
     const {
       history,
       intl,
-      setDialogIsOpen,
+//      setDialogIsOpen,
       dialogs,
       match,
       isGranted,
       isAuthorised,
       uid,
-      submit,
+//      submit,
       handleSubmit,
       isLoading,
       trips
     } = this.props;
+
+    const {submit, setDialogIsOpen} = this.props.actions;
 
     const trip = trips.filter(u => u.id == uid)[0];
 
@@ -143,7 +146,7 @@ class Trip extends Component {
             <Button onClick={this.handleClose} color="primary" >
               {intl.formatMessage({ id: 'cancel' })}
             </Button>
-            <Button onClick={this.handleDelete} color="secondary" >
+            <Button value={uid} onClick={this.handleDelete} color="secondary" >
               {intl.formatMessage({ id: 'delete' })}
             </Button>
           </DialogActions>
@@ -187,10 +190,13 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      actions: bindActionCreators( dispatch, setDialogIsOpen, change )
+      actions: bindActionCreators( {setDialogIsOpen, change, submit}, dispatch ),
+      UpdateTrip: trip => dispatch(TripActions.UpdateTrip(trip)),
+      CreateTrip: trip => dispatch(TripActions.CreateTrip(trip)),
+      DeleteTrip: (id, history) => dispatch(TripActions.DeleteTrip(id, history))
   }
 }
 
 export default connect(
-  mapStateToProps, {mapDispatchToProps, submit}
+  mapStateToProps, mapDispatchToProps
 )(injectIntl(withRouter(withFirebase(withTheme()(withStyles(styles, { withTheme: true })(Trip))))))

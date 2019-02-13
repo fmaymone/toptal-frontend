@@ -29,10 +29,6 @@ const data = {
 class Form extends Component {
 
 
-  handleSubmit(e) {
-    //do stuff here
-  }
-
   render() {
     const {
       intl,
