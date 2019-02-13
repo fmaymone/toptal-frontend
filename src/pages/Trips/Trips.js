@@ -17,6 +17,7 @@ import { Activity, Scrollbar } from 'rmw-shell'
 import axios from 'axios';
 import * as TripActions from '../../store/actions/tripActions'
 import { bindActionCreators } from 'redux';
+//import tripService from '../../services/toptal-api'
 
 class Trips extends Component {
   state = {
