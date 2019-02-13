@@ -9,7 +9,7 @@ const MyLoadable = (opts, preloadComponents) =>
 const AsyncDashboard = MyLoadable({ loader: () => import('../pages/Dashboard') })
 const AsyncTrip = MyLoadable({ loader: () => import('../pages/Trips/Trip') })
 const AsyncTrips = MyLoadable({ loader: () => import('../pages/Trips/Trips') }, [AsyncTrip])
-
+const AsyncLoginHome = MyLoadable({ loader: () => import('../pages/Login/Home') }, [AsyncLoginHome])
 
 const routes = [
   <RestrictedRoute type="private" path="/" exact component={AsyncDashboard} />,

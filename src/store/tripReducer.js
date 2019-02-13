@@ -24,7 +24,7 @@ export function TripListReducer(state = [], action) {
         //Read    
         case TripActions.GET_TRIPS_SUCCESS: {
             
-            return action.trips;
+            return action.trips.data;
 
         }
         
@@ -63,7 +63,6 @@ export function TripListReducer(state = [], action) {
             return state.filter(s => trip(s, action))
 
         }
-        
             
         default:
             return state
@@ -133,11 +132,6 @@ const trip = (state, action) => {
             {
                 return false
             }
-
-        case TripActions.DELETE_TRIP_ERROR:
-        {
-            return state;
-        }
 
         default:
             {
