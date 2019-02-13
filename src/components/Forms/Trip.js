@@ -17,10 +17,19 @@ import {Test} from './Test'
 import axios from 'axios'
 import { load as loadAccount } from './account'
 import { initialize } from 'redux-form'
+import { fetchTrip } from '../../store/actions/tripActions';
 
-
+const data = {
+  // used to populate "account" reducer when "Load" is clicked
+  destination: 'From Data',
+}
 
 class Form extends Component {
+
+
+  handleSubmit(e) {
+    //do stuff here
+  }
 
   render() {
     const {
@@ -30,7 +39,8 @@ class Form extends Component {
       match,
       values,
       handleSubmit,
-      load
+      load,
+      mySubmit
     } = this.props
 
     const uid = match.params.uid
@@ -128,12 +138,11 @@ const mapStateToProps = (state, ownProps) => {
     vehicleTypes,
     users,
     dialogs,
-    initialValues: ownProps.initValues,
-    selector
+    initialValues: ownProps.initValues
 
   }
 }
 
 export default connect(
-  mapStateToProps, { setDialogIsOpen  }
+  mapStateToProps, { setDialogIsOpen }
 )(injectIntl(withRouter(withTheme()(Form))))

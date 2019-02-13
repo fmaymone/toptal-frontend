@@ -20,7 +20,7 @@ import { change, submit } from 'redux-form';
 import isGranted from 'rmw-shell/lib/utils/auth';
 import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios';
-import * as TripActions from '../../store/actions/tripActions'
+import {UpdateTrip} from '../../store/actions/tripActions'
 import { bindActionCreators } from 'redux';
 
 
@@ -42,8 +42,7 @@ class Trip extends Component {
   }
 
   handleUpdate = (trip) => {
-    this.props.actions.UpdateTrip(trip)
-    this.props.history.push('/trips');
+    UpdateTrip(trip)
   }
 
   handleClose = () => {
@@ -53,19 +52,15 @@ class Trip extends Component {
 
   handleDelete = () => {
 
-    const { history, match, firebaseApp } = this.props;
-    const uid = match.params.uid;
-    const path = `/trips/${this.props.auth.uid}/`;
-    if (uid) {
-      firebaseApp.database().ref().child(`${path}${uid}`).remove().then(() => {
-        this.handleClose();
-        history.goBack();
-      })
-    }
   }
 
   handleSave = (values) => {
-    //console.log(this.props);
+    if(values.id){
+      this.handleUpdate(values);
+    }else{
+      console.log(values);
+    }
+    
   }
 
 
@@ -81,6 +76,7 @@ class Trip extends Component {
       isAuthorised,
       uid,
       submit,
+      handleSubmit,
       isLoading,
       trips
     } = this.props;
@@ -128,8 +124,6 @@ class Trip extends Component {
               history.push("/trips");
             }}
             initValues = {trip}
-            handleUpdate = {this.handleUpdate}
-            handleSubmit={this.handleSave}
           />
         </div>
 
@@ -193,7 +187,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      actions: bindActionCreators(TripActions, dispatch, setDialogIsOpen, change )
+      actions: bindActionCreators( dispatch, setDialogIsOpen, change )
   }
 }
 

@@ -12,6 +12,8 @@ const get = (url) => {
 }
 
 const put = (url = '', data = '', config = {}) => {
+    axios.defaults.headers.common['Authorization'] = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NTAwNjM2NjN9.LXFwGLIFoD6zM68w1wAE0Wb8gVr_WmGI_B3P6BnAC7E'
+    axios.defaults.headers.common['Accept'] = 'application/vnd.trips.v1+json'
     return axios.put(url, data, config)
 }
 

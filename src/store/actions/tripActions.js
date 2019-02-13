@@ -106,18 +106,19 @@ export function CancelEditing(_id) {
 }
 
 export function UpdateTrip(trip) {
-    return (dispatch, getState) => {
+    // return (dispatch, getState) => {
         
-        //Multiple actions can be sent usign the Redux-Thunk middleware
+    
 
-        dispatch({
-            type: UPDATE_TRIP,
-            trip
-        })
-        TripApi.updateTrip(trip).then(res => {
-            dispatch(UpdateTripSuccess(res.data.data))
-        })
-    }
+    //     dispatch({
+    //         type: UPDATE_TRIP,
+    //         trip
+    //     })
+    //     TripApi.updateTrip(trip).then(res => {
+    //         dispatch(UpdateTripSuccess(res.data.data))
+    //     })
+    // }
+    TripApi.updateTrip(trip)
 }
 export function UpdateTripSuccess(trip) {
     return {
