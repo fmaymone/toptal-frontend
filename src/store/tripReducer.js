@@ -24,7 +24,7 @@ export function TripListReducer(state = [], action) {
         //Read    
         case TripActions.GET_TRIPS_SUCCESS: {
             
-            return action.trips.data;
+            return action.trips;
 
         }
         
