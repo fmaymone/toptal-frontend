@@ -10,12 +10,13 @@ export default class TripService extends AuthService {
         return {
             headers: {
                 Authorization: this._authToken,
-                Accept: "application/vnd.trips.v1+json"
+                Accept: "application/vnd.trips.v1+json",
+                'Content-Type': 'application/json'
             }
         };
     }
 
-    async listTrips() {
+    async list() {
         if (!this._authenticated) {
             throw new Exception("Not Authenticated");
         }
@@ -30,7 +31,7 @@ export default class TripService extends AuthService {
         }
     }
 
-    async createTrip(trip) {
+    async create(trip) {
         if (!this._authenticated) {
             throw new Exception("Not Authenticated");
         }
@@ -45,6 +46,35 @@ export default class TripService extends AuthService {
         }
         catch(ex) {
             console.log(ex.message)
+            throw ex;
+        }
+    }
+
+    async update(trip) {
+        if (!this._authenticated) {
+            throw new Exception("Not Authenticated");
+        }
+        try {
+            let response = await this._client.put(`/trips/${trip.id}`, trip, defautConfig());
+            console.log("[updateTrip]: ok");
+        }
+        catch(ex) {
+            console.log(ex.message)
+            throw ex;
+        }
+    }
+
+    async delete(tripId) {
+        if (!this._authenticated) {
+            throw new Exception("Not Authenticated");
+        }
+        try {
+            let response = await this._client.delete(`/trips/${tripId}`, defautConfig());
+            console.log("[deleteTrip]: ok");
+        }
+        catch(ex) {
+            console.log(ex.message)
+            throw ex;
         }
     }
 }
