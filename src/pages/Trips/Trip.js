@@ -51,8 +51,8 @@ class Trip extends Component {
   }
 
   handleDelete = () => {
-    const { uid } = this.props;
-    this.props.DeleteTrip(uid);
+    const { uid, history } = this.props;
+    this.props.DeleteTrip(uid, history);
   }
 
   handleSave = (values) => {
@@ -193,7 +193,7 @@ const mapDispatchToProps = (dispatch) => {
       actions: bindActionCreators( {setDialogIsOpen, change, submit}, dispatch ),
       UpdateTrip: trip => dispatch(TripActions.UpdateTrip(trip)),
       CreateTrip: trip => dispatch(TripActions.CreateTrip(trip)),
-      DeleteTrip: id => dispatch(TripActions.DeleteTrip(id))
+      DeleteTrip: (id, history) => dispatch(TripActions.DeleteTrip(id, history))
   }
 }
 

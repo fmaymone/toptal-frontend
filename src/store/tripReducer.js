@@ -136,9 +136,7 @@ const trip = (state, action) => {
 
         case TripActions.DELETE_TRIP_ERROR:
         {
-            return {
-                dialogs: { ...state.dialogs, delete_trip: false }
-            }
+            return state;
         }
 
         default:

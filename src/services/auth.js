@@ -6,6 +6,7 @@ export default class AuthService {
         this._authToken = "";
         this._authenticated = false;
         this.promise = null;
+        this._baseUrl = baseUrl;
     }
 
     async signUp(name, email, password, passwordConfirmation) {

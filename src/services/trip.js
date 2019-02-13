@@ -20,7 +20,7 @@ export default class TripService extends AuthService {
             headers: {
                 Authorization: this._authToken,
                 Accept: "application/vnd.trips.v1+json",
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }
         };
     }
@@ -68,7 +68,7 @@ export default class TripService extends AuthService {
             throw new Exception("Not Authenticated");
         }
         try {
-            let response = await this._client.put(`/trips/${trip.id}`, trip, this.defaultConfig());
+            let response = await this._client.patch(`/trips/${trip.id}`, trip, this.defaultConfig());
             console.log("[updateTrip]: ok");
         }
         catch(ex) {

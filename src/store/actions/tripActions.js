@@ -1,6 +1,7 @@
 //Import the Trip API 
 
 import tripService from "../../services/toptal-api"
+import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 
 //SignUp
 export const SIGNUP_SUCCESS = '[Trip] SIGNUP_SUCCESS' 
@@ -170,7 +171,7 @@ export function UpdateTripSuccess(trip) {
 
 
 //Delete
-export function DeleteTrip(trip) {
+export function DeleteTrip(trip, history) {
     return (dispatch, getState) => {
         dispatch({
             type: DELETE_TRIP,
@@ -178,6 +179,8 @@ export function DeleteTrip(trip) {
         })
         tripService.delete(trip).then(() => {
             dispatch(DeleteTripSuccess(trip))
+            dispatch(setDialogIsOpen('delete_trip', false))
+            history.push("/trips")
         }).catch(error => {
             dispatch(DeleteTripError(error))
         })
