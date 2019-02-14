@@ -3,29 +3,23 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import './App.css';
 import LoginScreen from './LoginScreen';
 
-injectTapEventPlugin();
-
+//injectTapEventPlugin();
 
 class Home extends Component {
   constructor(props){
     super(props);
     this.state={
-      loginPage:[],
-      uploadScreen:[]
+      loginPage:[]
+      
     }
   }
   componentWillMount(){
-    var loginPage =[];
-    loginPage.push(<LoginScreen appContext={this}/>);
-    this.setState({
-                  loginPage:loginPage
-                    })
   }
   render() {
     return (
       <div className="App">
-        {this.state.loginPage}
-        {this.state.uploadScreen}
+      <div><h1>Olar mundo</h1></div>
+        <LoginScreen />
       </div>
     );
   }

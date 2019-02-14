@@ -9,7 +9,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import axios from 'axios';
-import UploadPage from './UploadPage';
+
 
 var apiBaseUrl = "http://localhost:4000/api/";
 
@@ -113,7 +113,6 @@ class Login extends Component {
      if(response.data.code == 200){
        console.log("Login successfull");
        var uploadScreen=[];
-       uploadScreen.push(<UploadPage appContext={self.props.appContext} role={self.state.loginRole}/>)
        self.props.appContext.setState({loginPage:[],uploadScreen:uploadScreen})
      }
      else if(response.data.code == 204){
