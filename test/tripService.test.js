@@ -1,5 +1,5 @@
 import {assert, expect} from 'chai';
-import tripService from '../src/services/toptal-api'
+import {tripService} from '../src/services/toptal-api'
 
 describe("TripService", function() {
     before(function(done) {
