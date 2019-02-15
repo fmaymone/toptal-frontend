@@ -14,7 +14,7 @@ export function UserListReducer(state = [], action) {
         // The cases ordered in CRUD order.
 
         // Create
-        case UserActions.CREATE_TRIP_SUCCESS: {
+        case UserActions.CREATE_USER_SUCCESS: {
                 return [
                     ...state,
                     action.user
@@ -22,13 +22,13 @@ export function UserListReducer(state = [], action) {
         }
             
         //Read    
-        case UserActions.GET_TRIPS_SUCCESS: {
+        case UserActions.GET_USERS_SUCCESS: {
             
             return action.users;
 
         }
 
-        case UserActions.GET_TRIP: {
+        case UserActions.GET_USER: {
             return { 
                 ...state, 
                 loadingUsers: action.loadingUsers
@@ -38,34 +38,34 @@ export function UserListReducer(state = [], action) {
         // The following Cases handle the data by mapping it. Mostly because they are related with the modification of a single Data
         
         //Update    
-        case UserActions.START_EDITING: {
+        case UserActions.START_EDITING_USER: {
             
             return state.map(s => user(s, action))
 
         }
-        case UserActions.CANCEL_EDITING: {
+        case UserActions.CANCEL_EDITING_USER: {
             
             return state.map(s => user(s, action))
 
         }
-        case UserActions.UPDATE_TRIP: {
+        case UserActions.UPDATE_USER: {
 
             return state.map(s => user(s, action))
             
         }
-        case UserActions.UPDATE_TRIP_SUCCESS: {
+        case UserActions.UPDATE_USER_SUCCESS: {
 
             return state.map(s => user(s, action))
 
         }
         
         //Delete    
-        case UserActions.DELETE_TRIP: {
+        case UserActions.DELETE_USER: {
 
             return state.map(s => user(s, action))
 
         }
-        case UserActions.DELETE_TRIP_SUCCESS: {
+        case UserActions.DELETE_USER_SUCCESS: {
 
             return state.filter(s => user(s, action))
 
@@ -85,7 +85,7 @@ const user = (state, action) => {
     // If the mapped user of the previous state matches with the new ID of the action, 
     // Only then proceed to the Reducer Switch case
 
-    if (state._id != (action._id || action.user._id)) {
+    if (state._id !== (action._id || action.user._id)) {
         return state;
     }
 
@@ -93,7 +93,7 @@ const user = (state, action) => {
 
         // Edit/modifies the individual Users using ES6 spread operator. The cases are self explanatory.
 
-        case UserActions.START_EDITING:
+        case UserActions.START_EDITING_USER:
             {
                 return {
                     ...state,
@@ -101,7 +101,7 @@ const user = (state, action) => {
                 }
             }
 
-        case UserActions.CANCEL_EDITING:
+        case UserActions.CANCEL_EDITING_USER:
             {
                 return {
                     ...state,
@@ -109,7 +109,7 @@ const user = (state, action) => {
                 }
             }
 
-        case UserActions.UPDATE_TRIP:
+        case UserActions.UPDATE_USER:
             {
                 return {
                     ...state,
@@ -118,7 +118,7 @@ const user = (state, action) => {
                 }
             }
 
-        case UserActions.UPDATE_TRIP_SUCCESS:
+        case UserActions.UPDATE_USER_SUCCESS:
             {
                 return {
                     ...state,
@@ -127,7 +127,7 @@ const user = (state, action) => {
                 }
             }
 
-        case UserActions.DELETE_TRIP:
+        case UserActions.DELETE_USER:
             {
                 return {
                     ...state,
@@ -135,7 +135,7 @@ const user = (state, action) => {
                 }
             }
 
-        case UserActions.DELETE_TRIP_SUCCESS:
+        case UserActions.DELETE_USER_SUCCESS:
             {
                 return false
             }

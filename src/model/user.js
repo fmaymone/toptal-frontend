@@ -4,14 +4,7 @@ export default class Role {
 }
 
 class User {
-  constructor() {
-    this._id = -1;
-    this._name = "";
-    this._email = "";
-    this._role = "";
-  }
-
-  constructor(id, name, email, role) {
+  constructor(id = -1, name = "", email = "", role = "") {
     this._id = id;
     this._name = name;
     this._email = email;

@@ -60,7 +60,7 @@ export function GetUser(id){
 export function GetUserSuccess(user){
     return {
         type:GET_USER_SUCCESS,
-        trip
+        user
     }
 }
 
@@ -104,7 +104,7 @@ export function UpdateUser(user) {
             user: user
         })
         userService.update(user).then(() => {
-            dispatch(UpdateTripSuccess(user))
+            dispatch(UpdateUserSuccess(user))
         })
     }
 }

@@ -37,7 +37,7 @@ export default class UserService extends AuthService {
     try {
       let response = await this._client.get("/users", this.defaultConfig());
       console.log("[listUsers]: " + response.data);
-      return response.data.map(u => { new User(u.id, u.name, u.email, u.role); });
+      return response.data.map(u => { return new User(u.id, u.name, u.email, u.role); });
     }
     catch(ex) {
       console.log(ex.message)
