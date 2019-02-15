@@ -116,16 +116,21 @@ export function GetTripSuccess(trip){
 
 export function GetTrips(){
     return (dispatch, getState) => {
-        return tripService.list().then(res => {
-            dispatch(GetTripsSuccess(res))
+        tripService.list().then(res => {
+          dispatch(GetTripsSuccess(res))
         })
+        dispatch({
+          type: GET_TRIPS,
+          loadingTrips: true
+        });
     }
 }
 
 export function GetTripsSuccess(trips){
     return {
         type:GET_TRIPS_SUCCESS,
-        trips: trips
+        trips: trips,
+        loadingTrips: false
     }
 }
 

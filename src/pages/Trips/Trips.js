@@ -29,10 +29,6 @@ class Trips extends Component {
     this.fetchData();
   }
 
-  componentWillMount () {
-    this.fetchData();
-  }
-
   fetchData = async () => {
     await this.props.actions.GetTrips();
     this.setState({isLoading: false})
