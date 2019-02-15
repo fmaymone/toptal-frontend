@@ -85,7 +85,7 @@ const trip = (state, action) => {
     // If the mapped trip of the previous state matches with the new ID of the action, 
     // Only then proceed to the Reducer Switch case
 
-    if (state._id != (action._id || action.trip._id)) {
+    if (state._id !== (action._id || action.trip._id)) {
         return state;
     }
 
