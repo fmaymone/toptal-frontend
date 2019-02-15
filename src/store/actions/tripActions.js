@@ -1,6 +1,6 @@
 //Import the Trip API 
 
-import tripService from "../../services/toptal-api"
+import {tripService} from "../../services/toptal-api"
 import { setDialogIsOpen } from 'rmw-shell/lib/store/dialogs/actions'
 
 //SignUp
